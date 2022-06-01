@@ -14,7 +14,8 @@ const LoginWrapper = styled(Box)(
 );
 
 const LogoDescWrapper = styled(Typography)(
-  () => `
+  ({ theme }) => `
+  color: ${theme.colors.primary.main}
     `
 );
 
@@ -45,7 +46,7 @@ function Login() {
                 alignItems="center"
               >
                 <Logo />
-                <p>CMS FOR MOBILE</p>
+                <LogoDescWrapper variant="h5">CMS FOR MOBILE</LogoDescWrapper>
               </Box>
               <LoginForm />
             </Card>

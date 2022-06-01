@@ -1,8 +1,25 @@
-import { Container, Grid, TextField } from '@mui/material';
+import {
+  EmailTwoTone,
+  VisibilityOffTwoTone,
+  VisibilityTwoTone,
+  VpnKeyTwoTone
+} from '@mui/icons-material';
+import { NavLink as RouterLink } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField
+} from '@mui/material';
+import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ILoginFormData } from 'src/models/login-form-data.model';
 
 function LoginForm() {
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const { control, handleSubmit } = useForm<ILoginFormData>();
 
   const onSubmit: SubmitHandler<ILoginFormData> = (data) => {
@@ -19,26 +36,75 @@ function LoginForm() {
       >
         <Grid item mx="auto">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container>
+            <Box>
               <Controller
                 name="email"
                 control={control}
-                render={({ field }) => {
-                  console.log(field);
-                  return <TextField {...field} placeholder="Email" />;
-                }}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="email"
+                    placeholder="Email"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailTwoTone color="primary" />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               />
-            </Grid>
-            <Grid container mt={1}>
+            </Box>
+            <Box mt={1}>
               <Controller
                 name="password"
+                defaultValue=""
                 control={control}
-                render={({ field }) => {
-                  console.log(field);
-                  return <TextField {...field} placeholder="Password" />;
-                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type={isShowPassword ? 'text' : 'password'}
+                    placeholder="Password"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <VpnKeyTwoTone color="primary" />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton
+                            color="primary"
+                            onClick={() => setIsShowPassword(!isShowPassword)}
+                          >
+                            {isShowPassword ? (
+                              <VisibilityTwoTone />
+                            ) : (
+                              <VisibilityOffTwoTone />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               />
-            </Grid>
+            </Box>
+            <Box mt={1}>
+              <Button
+                type="button"
+                component={RouterLink}
+                to={'/dashboards'}
+                fullWidth
+                variant="contained"
+              >
+                Login
+              </Button>
+            </Box>
           </form>
         </Grid>
       </Grid>
