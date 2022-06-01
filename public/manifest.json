@@ -1,0 +1,20 @@
+{
+  "theme_color": "#D4A55D",
+  "background_color": "#F7FAFC",
+  "display": "standalone",
+  "start_url": ".",
+  "short_name": "MS Clinic CMS for Mobile",
+  "name": "MS Clinic CMS for Mobile",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
