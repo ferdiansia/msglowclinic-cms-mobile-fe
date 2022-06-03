@@ -553,9 +553,15 @@ export const PureLightTheme = createTheme({
           textTransform: 'none',
           paddingLeft: 16,
           paddingRight: 16,
+          paddingTop: 14,
+          paddingBottom: 14,
 
           '.MuiSvgIcon-root': {
             transition: 'all .2s'
+          },
+
+          '&.Mui-disabled': {
+            backgroundColor: colors.primary.light
           }
         },
         endIcon: {

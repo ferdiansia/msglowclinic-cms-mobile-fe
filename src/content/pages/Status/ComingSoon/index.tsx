@@ -13,13 +13,13 @@ import {
   FormHelperText
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import Logo from 'src/components/LogoSign';
 
 import { styled } from '@mui/material/styles';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
+import Logo from 'src/components/Logo';
 
 const MainContent = styled(Box)(
   () => `
@@ -58,7 +58,6 @@ const ButtonNotify = styled(Button)(
 );
 
 function StatusComingSoon() {
-
   const calculateTimeLeft = () => {
     const difference = +new Date(`2022`) - +new Date();
     let timeLeft = {};
@@ -117,7 +116,8 @@ function StatusComingSoon() {
                 fontWeight="normal"
                 sx={{ mb: 4 }}
               >
-                We're working on implementing the last features before our launch!
+                We're working on implementing the last features before our
+                launch!
               </Typography>
             </Container>
             <img

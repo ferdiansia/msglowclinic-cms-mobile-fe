@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Box, Container, Card, Grid, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import Logo from 'src/components/LogoSign';
+import Logo from 'src/components/Logo';
 import LoginForm from './LoginForm';
 
 const LoginWrapper = styled(Box)(
@@ -37,11 +37,11 @@ function Login() {
           container
         >
           <Grid item mx="auto">
-            <Card sx={{ p: 10, mb: 10 }} style={{ marginTop: 50 }}>
+            <Card sx={{ p: 10, mb: 10 }}>
               <Box
                 display="flex"
                 justifyContent="center"
-                py={5}
+                pb={6}
                 flexDirection="column"
                 alignItems="center"
               >

@@ -7,12 +7,11 @@ import {
   Tooltip
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import Logo from 'src/components/LogoSign';
-
 import { styled } from '@mui/material/styles';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import Logo from 'src/components/Logo';
 
 const MainContent = styled(Box)(
   () => `
@@ -27,7 +26,6 @@ const MainContent = styled(Box)(
 );
 
 function StatusMaintenance() {
-
   return (
     <>
       <Helmet>

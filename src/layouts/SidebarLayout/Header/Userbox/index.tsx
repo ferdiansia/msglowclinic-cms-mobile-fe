@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import {
-  Avatar,
   Box,
   Button,
   Divider,
@@ -16,12 +15,12 @@ import {
   Typography
 } from '@mui/material';
 
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
 import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
+import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -59,9 +58,7 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-
-  const user =
-  {
+  const user = {
     name: 'Catherine Pike',
     avatar: '/static/images/avatars/1.jpg',
     jobtitle: 'Project Manager'
@@ -81,7 +78,7 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <AccountCircleTwoToneIcon />
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
@@ -108,7 +105,7 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          <AccountCircleTwoToneIcon fontSize={'large'} />
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
@@ -120,28 +117,16 @@ function HeaderUserbox() {
         <List sx={{ p: 1 }} component="nav">
           <ListItem button to="/management/profile/details" component={NavLink}>
             <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary="My Profile" />
+            <ListItemText primary="Change User Profile" />
           </ListItem>
-          <ListItem
-            button
-            to="/dashboards/messenger"
-            component={NavLink}
-          >
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary="Messenger" />
-          </ListItem>
-          <ListItem
-            button
-            to="/management/profile/settings"
-            component={NavLink}
-          >
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary="Account Settings" />
+          <ListItem button to="/dashboards/messenger" component={NavLink}>
+            <VpnKeyTwoToneIcon fontSize="small" />
+            <ListItemText primary="Change Password" />
           </ListItem>
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button component={NavLink} to={'/'} color="primary" fullWidth>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>

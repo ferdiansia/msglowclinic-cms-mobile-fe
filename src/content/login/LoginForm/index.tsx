@@ -4,10 +4,8 @@ import {
   VisibilityTwoTone,
   VpnKeyTwoTone
 } from '@mui/icons-material';
-import { NavLink as RouterLink } from 'react-router-dom';
 import {
   Box,
-  Button,
   Container,
   Grid,
   IconButton,
@@ -17,13 +15,56 @@ import {
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ILoginFormData } from 'src/models/login-form-data.model';
+import { SchemaOf, object, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import axios from 'axios';
+import env from 'react-dotenv';
+import { AUTH } from 'src/const/api';
+import { useNavigate } from 'react-router';
+import { LoadingButton } from '@mui/lab';
+import { useAlert } from 'react-alert';
+
+const loginValidationSchema: SchemaOf<ILoginFormData> = object({
+  email: string()
+    .email('Format email tidak sesuai')
+    .required('Email wajib diisi'),
+  password: string().required('Password wajib diisi')
+}).required();
 
 function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-  const { control, handleSubmit } = useForm<ILoginFormData>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const alert = useAlert();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<ILoginFormData>({
+    resolver: yupResolver(loginValidationSchema)
+  });
 
   const onSubmit: SubmitHandler<ILoginFormData> = (data) => {
-    console.log(data);
+    setIsLoading(true);
+    axios
+      .post<{ token: string }>(`${env.API_URL}/${AUTH}/login`, null, {
+        params: { ...data }
+      })
+      .then((response) => {
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token);
+          navigate('/dashboards/home');
+        } else {
+          throw new Error('Masalah tidak terduga');
+        }
+      })
+      .catch((err) => {
+        alert.show(err.response.data.message || 'Masalah tidak terduga');
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      });
   };
 
   return (
@@ -35,7 +76,7 @@ function LoginForm() {
         container
       >
         <Grid item mx="auto">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <Box>
               <Controller
                 name="email"
@@ -44,9 +85,12 @@ function LoginForm() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    type="email"
+                    type="text"
                     placeholder="Email"
                     fullWidth
+                    required
+                    error={!!errors?.email}
+                    helperText={errors.email?.message}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -69,6 +113,9 @@ function LoginForm() {
                     type={isShowPassword ? 'text' : 'password'}
                     placeholder="Password"
                     fullWidth
+                    required
+                    error={!!errors?.password}
+                    helperText={errors.password?.message}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -95,15 +142,15 @@ function LoginForm() {
               />
             </Box>
             <Box mt={1}>
-              <Button
-                type="button"
-                component={RouterLink}
-                to={'/dashboards'}
+              <LoadingButton
+                type="submit"
+                loading={isLoading}
                 fullWidth
                 variant="contained"
+                disabled={isLoading}
               >
                 Login
-              </Button>
+              </LoadingButton>
             </Box>
           </form>
         </Grid>
