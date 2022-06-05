@@ -34,10 +34,9 @@ const loginValidationSchema: SchemaOf<ILoginFormData> = object({
 
 function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const alert = useAlert();
-  const { API_URL } = useContext(GlobalContext);
+  const { API_URL, loading, setLoading } = useContext(GlobalContext);
 
   const {
     control,
@@ -48,7 +47,7 @@ function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<ILoginFormData> = (data) => {
-    setIsLoading(true);
+    setLoading(true);
     axios
       .post<{ token: string }>(`${API_URL}/${AUTH}/login`, null, {
         params: { ...data }
@@ -63,9 +62,7 @@ function LoginForm() {
       })
       .catch((err) => {
         alert.show(err.response.data.message || 'Masalah tidak terduga');
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 500);
+        setLoading(false);
       });
   };
 
@@ -146,10 +143,10 @@ function LoginForm() {
             <Box mt={1}>
               <LoadingButton
                 type="submit"
-                loading={isLoading}
+                loading={loading}
                 fullWidth
                 variant="contained"
-                disabled={isLoading}
+                disabled={loading}
               >
                 Login
               </LoadingButton>
