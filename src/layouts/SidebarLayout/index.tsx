@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useContext, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
@@ -8,8 +8,8 @@ import Header from './Header';
 
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import env from 'react-dotenv';
 import { USER } from 'src/const/api';
+import { GlobalContext } from 'src/contexts/GlobalContext';
 
 axios.interceptors.request.use((request) => {
   request.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
@@ -46,10 +46,12 @@ const MainContent = styled(Box)(
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const navigate = useNavigate();
+  const { API_URL, setUser } = useContext(GlobalContext);
 
   const getCurrentUser = async () => {
-    const { data } = await axios.get(`${env.API_URL}/${USER}`);
+    const { data } = await axios.get(`${API_URL}/${USER}`);
     localStorage.setItem('currentuser', JSON.stringify(data.data));
+    setUser();
   };
 
   useEffect(() => {

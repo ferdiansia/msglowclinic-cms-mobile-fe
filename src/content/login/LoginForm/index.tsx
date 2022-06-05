@@ -12,17 +12,18 @@ import {
   InputAdornment,
   TextField
 } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ILoginFormData } from 'src/models/login-form-data.model';
 import { SchemaOf, object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import env from 'react-dotenv';
 import { AUTH } from 'src/const/api';
 import { useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
 import { useAlert } from 'react-alert';
+import { GlobalContext } from 'src/contexts/GlobalContext';
+import { HOME_ROUTE } from 'src/const/route-url';
 
 const loginValidationSchema: SchemaOf<ILoginFormData> = object({
   email: string()
@@ -36,6 +37,7 @@ function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const alert = useAlert();
+  const { API_URL } = useContext(GlobalContext);
 
   const {
     control,
@@ -48,13 +50,13 @@ function LoginForm() {
   const onSubmit: SubmitHandler<ILoginFormData> = (data) => {
     setIsLoading(true);
     axios
-      .post<{ token: string }>(`${env.API_URL}/${AUTH}/login`, null, {
+      .post<{ token: string }>(`${API_URL}/${AUTH}/login`, null, {
         params: { ...data }
       })
       .then((response) => {
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
-          navigate('/dashboards/home');
+          navigate(`${HOME_ROUTE}`);
         } else {
           throw new Error('Masalah tidak terduga');
         }

@@ -6,6 +6,7 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import { HOME_ROUTE } from './const/route-url';
 
 const Loader = (Component) => (props) =>
   (
@@ -47,7 +48,7 @@ const routes: PartialRouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Navigate to="/dashboards/Home" replace />
+        element: <Navigate to={`${HOME_ROUTE}`} replace />
       },
       {
         path: 'home',

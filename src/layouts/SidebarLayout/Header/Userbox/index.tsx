@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 
 import { NavLink } from 'react-router-dom';
 
@@ -21,6 +21,11 @@ import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone';
+import { GlobalContext } from 'src/contexts/GlobalContext';
+import axios from 'axios';
+import { USER } from 'src/const/api';
+import { useNavigate } from 'react-router';
+import { LoadingButton } from '@mui/lab';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -58,11 +63,9 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
-  };
+  const { API_URL, user, setUser, loading, setLoading } =
+    useContext(GlobalContext);
+  const navigate = useNavigate();
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -75,15 +78,27 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
+  const logoutHandler = async () => {
+    setLoading(true);
+    const { data } = await axios.get(`${API_URL}/${USER}/logout`);
+    if (data.data) {
+      localStorage.removeItem('currentuser');
+      localStorage.removeItem('token');
+      setUser();
+      navigate('/');
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
         <AccountCircleTwoToneIcon />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user?.name || ''}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user?.email || ''}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -107,9 +122,9 @@ function HeaderUserbox() {
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
           <AccountCircleTwoToneIcon fontSize={'large'} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user?.name || ''}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user?.email || ''}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
@@ -126,10 +141,16 @@ function HeaderUserbox() {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button component={NavLink} to={'/'} color="primary" fullWidth>
+          <LoadingButton
+            onClick={() => logoutHandler()}
+            color="primary"
+            fullWidth
+            loading={loading}
+            disabled={loading}
+          >
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
-          </Button>
+          </LoadingButton>
         </Box>
       </Popover>
     </>
