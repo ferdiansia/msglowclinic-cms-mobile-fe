@@ -1,4 +1,5 @@
 const AUTH = 'auth';
 const USER = 'user';
+const BANNER = 'banners';
 
-export { AUTH, USER };
+export { AUTH, USER, BANNER };

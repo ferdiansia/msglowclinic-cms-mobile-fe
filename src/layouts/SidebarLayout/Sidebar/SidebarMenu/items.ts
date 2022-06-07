@@ -2,7 +2,12 @@ import { ReactNode } from 'react';
 
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone';
 import AddPhotoAlternateTwoToneIcon from '@mui/icons-material/AddPhotoAlternateTwoTone';
-import { BANNER_ROUTE, HOME_ROUTE } from 'src/const/route-url';
+import {
+  BANNER_ROUTE,
+  HOME_ROUTE,
+  MAIN_BANNER_ROUTE,
+  PROMO_BANNER_ROUTE
+} from 'src/const/route-url';
 
 export interface MenuItem {
   link?: string;
@@ -28,8 +33,18 @@ const menuItems: MenuItems[] = [
       },
       {
         name: 'Banner',
+        icon: AddPhotoAlternateTwoToneIcon,
         link: `${BANNER_ROUTE}`,
-        icon: AddPhotoAlternateTwoToneIcon
+        items: [
+          {
+            name: 'Main Banner',
+            link: `${MAIN_BANNER_ROUTE}`
+          },
+          {
+            name: 'Promo Banner',
+            link: `${PROMO_BANNER_ROUTE}`
+          }
+        ]
       }
     ]
   }

@@ -15,13 +15,9 @@ const Loader = (Component) => (props) =>
     </Suspense>
   );
 
-// Pages
 const Login = Loader(lazy(() => import('src/content/login')));
-
-// Dashboards
-
 const Home = Loader(lazy(() => import('src/content/dashboards/Home')));
-
+const Banner = Loader(lazy(() => import('src/content/banner')));
 const Status404 = Loader(
   lazy(() => import('src/content/pages/Status/Status404'))
 );
@@ -53,6 +49,19 @@ const routes: PartialRouteObject[] = [
       {
         path: 'home',
         element: <Home />
+      },
+      {
+        path: 'banner',
+        children: [
+          {
+            path: 'main-banner',
+            element: <Banner type="main" />
+          },
+          {
+            path: 'promo-banner',
+            element: <Banner type="promo" />
+          }
+        ]
       }
     ]
   }

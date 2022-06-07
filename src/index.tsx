@@ -9,7 +9,8 @@ import AlertTemplate from 'react-alert-template-basic';
 
 import 'nprogress/nprogress.css';
 import { SidebarProvider } from './contexts/SidebarContext';
-import { GlobalProvider } from './contexts/GlobalContext';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const options = {
   position: positions.TOP_CENTER,
@@ -20,15 +21,15 @@ const options = {
 
 ReactDOM.render(
   <HelmetProvider>
-    <GlobalProvider>
-      <SidebarProvider>
+    <SidebarProvider>
+      <Provider store={store}>
         <BrowserRouter>
           <AlertProvider template={AlertTemplate} {...options}>
             <App />
           </AlertProvider>
         </BrowserRouter>
-      </SidebarProvider>
-    </GlobalProvider>
+      </Provider>
+    </SidebarProvider>
   </HelmetProvider>,
   document.getElementById('root')
 );

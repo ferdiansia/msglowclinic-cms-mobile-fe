@@ -12,18 +12,18 @@ import {
   InputAdornment,
   TextField
 } from '@mui/material';
-import { useContext, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { ILoginFormData } from 'src/models/login-form-data.model';
 import { SchemaOf, object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
-import { AUTH } from 'src/const/api';
 import { useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
+import { getAuthToken } from 'src/redux/auth/authSlice';
+import { useAppDispatch, useAppSelector } from 'src/redux/store';
 import { useAlert } from 'react-alert';
-import { GlobalContext } from 'src/contexts/GlobalContext';
 import { HOME_ROUTE } from 'src/const/route-url';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const loginValidationSchema: SchemaOf<ILoginFormData> = object({
   email: string()
@@ -36,7 +36,8 @@ function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const alert = useAlert();
-  const { API_URL, loading, setLoading } = useContext(GlobalContext);
+  const { loading } = useAppSelector((state) => state.auths);
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -46,24 +47,24 @@ function LoginForm() {
     resolver: yupResolver(loginValidationSchema)
   });
 
-  const onSubmit: SubmitHandler<ILoginFormData> = (data) => {
-    setLoading(true);
-    axios
-      .post<{ token: string }>(`${API_URL}/${AUTH}/login`, null, {
-        params: { ...data }
-      })
-      .then((response) => {
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token);
-          navigate(`${HOME_ROUTE}`);
-        } else {
-          throw new Error('Masalah tidak terduga');
-        }
-      })
-      .catch((err) => {
-        alert.show(err.response.data.message || 'Masalah tidak terduga');
-        setLoading(false);
-      });
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate(`${HOME_ROUTE}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSubmit = async (data: ILoginFormData) => {
+    try {
+      const actionResult = await dispatch(getAuthToken(data));
+      const result = unwrapResult(actionResult);
+      if (result) {
+        localStorage.setItem('token', result.token);
+        navigate(`${HOME_ROUTE}`);
+      }
+    } catch (err) {
+      alert.show(err);
+    }
   };
 
   return (
@@ -80,7 +81,7 @@ function LoginForm() {
               <Controller
                 name="email"
                 control={control}
-                defaultValue=""
+                defaultValue="patient_1@msclinic.com"
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -104,7 +105,7 @@ function LoginForm() {
             <Box mt={1}>
               <Controller
                 name="password"
-                defaultValue=""
+                defaultValue="Pass1234"
                 control={control}
                 render={({ field }) => (
                   <TextField
