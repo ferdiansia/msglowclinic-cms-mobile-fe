@@ -1,7 +1,5 @@
-import { useContext, useRef, useState } from 'react';
-
+import { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-
 import {
   Box,
   Button,
@@ -21,11 +19,12 @@ import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone';
-import { GlobalContext } from 'src/contexts/GlobalContext';
-import axios from 'axios';
-import { USER } from 'src/const/api';
 import { useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
+import { useAppDispatch, useAppSelector } from 'src/redux/store';
+import { removeAuthToken } from 'src/redux/auth/authSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useAlert } from 'react-alert';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -63,9 +62,12 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const { API_URL, user, setUser, loading, setLoading } =
-    useContext(GlobalContext);
+  const { loading } = useAppSelector((state) => state.auths);
+  const { user } = useAppSelector((state) => state.users);
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
+  const alert = useAlert();
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -79,15 +81,17 @@ function HeaderUserbox() {
   };
 
   const logoutHandler = async () => {
-    setLoading(true);
-    const { data } = await axios.get(`${API_URL}/${USER}/logout`);
-    if (data.data) {
-      localStorage.removeItem('currentuser');
-      localStorage.removeItem('token');
-      setUser();
-      navigate('/');
+    try {
+      const actionResult = await dispatch(removeAuthToken());
+      const result = unwrapResult(actionResult);
+
+      if (result) {
+        localStorage.removeItem('token');
+        navigate('/');
+      }
+    } catch (err) {
+      alert.show(err);
     }
-    setLoading(false);
   };
 
   return (

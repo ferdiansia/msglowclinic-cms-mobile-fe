@@ -9,19 +9,15 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 import { HOME_ROUTE } from './const/route-url';
 
 const Loader = (Component) => (props) =>
-  (
-    <Suspense fallback={<SuspenseLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
+(
+  <Suspense fallback={<SuspenseLoader />}>
+    <Component {...props} />
+  </Suspense>
+);
 
-// Pages
 const Login = Loader(lazy(() => import('src/content/login')));
-
-// Dashboards
-
 const Home = Loader(lazy(() => import('src/content/dashboards/Home')));
-
+const MainBanner = Loader(lazy(() => import('src/content/banner/MainBanner')));
 const Status404 = Loader(
   lazy(() => import('src/content/pages/Status/Status404'))
 );
@@ -53,6 +49,10 @@ const routes: PartialRouteObject[] = [
       {
         path: 'home',
         element: <Home />
+      },
+      {
+        path: 'banner',
+        element: <MainBanner />
       }
     ]
   }

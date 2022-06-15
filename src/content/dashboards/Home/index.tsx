@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import PageHeader from './PageHeader';
 
 function Home() {
   return (
@@ -6,6 +8,9 @@ function Home() {
       <Helmet>
         <title>Home</title>
       </Helmet>
+      <PageTitleWrapper>
+        <PageHeader />
+      </PageTitleWrapper>
     </>
   );
 }
