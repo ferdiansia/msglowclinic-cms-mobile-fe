@@ -1,15 +1,29 @@
 import { Card } from '@mui/material';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
+import { IBannerType } from 'src/models/banner.model';
 import { getAllBanner } from 'src/redux/banner/bannerSlice';
 import { useAppDispatch } from 'src/redux/store';
+import { IBannerForm } from './BannerForm';
 import BannerListTable from './BannerListTable';
 
-function BannerList(props: { title: 'promo' | 'main' }) {
+export interface IBannerListProps {
+  hasDelete?: boolean;
+  title: IBannerType;
+  handleOpenModalDelete: (id: string) => void;
+  handleOpenModalEdit: (id: IBannerForm) => void;
+}
+
+function BannerList(props: IBannerListProps) {
+  console.log('BannerList')
   const dispatch = useAppDispatch();
 
   const getAllData = async () => {
     await dispatch(
-      getAllBanner({ slug: `${props.title}-banner`, type: 'collection' })
+      getAllBanner({
+        slug: `${props.title}-banner`,
+        type: 'collection',
+        relations: 'file'
+      })
     );
   };
 
@@ -17,11 +31,16 @@ function BannerList(props: { title: 'promo' | 'main' }) {
     getAllData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.title]);
+
   return (
     <Card>
-      <BannerListTable title={props.title} />
+      <BannerListTable
+        handleDelete={props.handleOpenModalDelete}
+        handleOpenEdit={props.handleOpenModalEdit}
+        hasDelete={!!props.hasDelete}
+      />
     </Card>
   );
 }
 
-export default BannerList;
+export default memo(BannerList);

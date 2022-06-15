@@ -5,8 +5,6 @@ import AddPhotoAlternateTwoToneIcon from '@mui/icons-material/AddPhotoAlternateT
 import {
   BANNER_ROUTE,
   HOME_ROUTE,
-  MAIN_BANNER_ROUTE,
-  PROMO_BANNER_ROUTE
 } from 'src/const/route-url';
 
 export interface MenuItem {
@@ -34,17 +32,7 @@ const menuItems: MenuItems[] = [
       {
         name: 'Banner',
         icon: AddPhotoAlternateTwoToneIcon,
-        link: `${BANNER_ROUTE}`,
-        items: [
-          {
-            name: 'Main Banner',
-            link: `${MAIN_BANNER_ROUTE}`
-          },
-          {
-            name: 'Promo Banner',
-            link: `${PROMO_BANNER_ROUTE}`
-          }
-        ]
+        link: `${BANNER_ROUTE}`
       }
     ]
   }

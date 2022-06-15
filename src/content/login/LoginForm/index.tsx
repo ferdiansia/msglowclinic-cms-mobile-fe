@@ -81,7 +81,7 @@ function LoginForm() {
               <Controller
                 name="email"
                 control={control}
-                defaultValue="patient_1@msclinic.com"
+                defaultValue="superadmin@msclinic.com"
                 render={({ field }) => (
                   <TextField
                     {...field}

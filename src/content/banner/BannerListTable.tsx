@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
   Card,
   Table,
@@ -10,48 +10,27 @@ import {
   Typography,
   Tooltip,
   IconButton,
-  useTheme,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  Button
+  useTheme
 } from '@mui/material';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 import { useSelector } from 'react-redux';
-import {
-  selectAllBanner,
-  selectByIdBanner,
-  selectEntitiesBanner
-} from 'src/redux/banner/bannerSlice';
+import { selectAllBanner } from 'src/redux/banner/bannerSlice';
 import { IBanner } from 'src/models/banner.model';
 import { format } from 'date-fns';
-import { RootState } from 'src/redux/store';
+import { IBannerForm } from './BannerForm';
 
 interface BannerListTableProps {
   className?: string;
-  title: 'promo' | 'main';
+  handleDelete: (id: string) => void;
+  hasDelete?: boolean;
+  handleOpenEdit: (id: IBannerForm) => void;
 }
 
-const BannerListTable: FC<BannerListTableProps> = ({ title }) => {
+const BannerListTable: FC<BannerListTableProps> = (props) => {
+  console.log("BannerListTable")
   const banners = useSelector(selectAllBanner);
-  const [selectedId, setSelectedId] = useState(null);
-  const [open, setOpen] = useState(false);
-  const selectedBanner: any = useSelector(selectEntitiesBanner);
-
-  const handleOpen = (id: string) => {
-    setSelectedId(id);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setSelectedId(null);
-    setOpen(false);
-  };
-
   const theme = useTheme();
 
   return (
@@ -61,7 +40,7 @@ const BannerListTable: FC<BannerListTableProps> = ({ title }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Image</TableCell>
+                <TableCell width={110}>Image</TableCell>
                 <TableCell>Title</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell>Expired Date</TableCell>
@@ -72,16 +51,13 @@ const BannerListTable: FC<BannerListTableProps> = ({ title }) => {
               {banners.map((banner: IBanner) => {
                 return (
                   <TableRow hover key={banner.id}>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        image
-                      </Typography>
+                    <TableCell width={110}>
+                      <img
+                        loading="lazy"
+                        width={100}
+                        alt="banner img"
+                        src={banner.file.url}
+                      />
                     </TableCell>
                     <TableCell>
                       <Typography
@@ -123,6 +99,7 @@ const BannerListTable: FC<BannerListTableProps> = ({ title }) => {
                     <TableCell align="right">
                       <Tooltip title="Edit" arrow>
                         <IconButton
+                          onClick={() => props.handleOpenEdit(banner)}
                           sx={{
                             '&:hover': {
                               background: theme.colors.primary.lighter
@@ -135,21 +112,23 @@ const BannerListTable: FC<BannerListTableProps> = ({ title }) => {
                           <EditTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete" arrow>
-                        <IconButton
-                          onClick={() => handleOpen(banner.id)}
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.error.lighter
-                            },
-                            color: theme.palette.error.main
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          <DeleteTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
+                      {props.hasDelete && (
+                        <Tooltip title="Delete" arrow>
+                          <IconButton
+                            onClick={() => props.handleDelete(banner.id)}
+                            sx={{
+                              '&:hover': {
+                                background: theme.colors.error.lighter
+                              },
+                              color: theme.palette.error.main
+                            }}
+                            color="inherit"
+                            size="small"
+                          >
+                            <DeleteTwoToneIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
                     </TableCell>
                   </TableRow>
                 );
@@ -158,31 +137,8 @@ const BannerListTable: FC<BannerListTableProps> = ({ title }) => {
           </Table>
         </TableContainer>
       </Card>
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Anda yakin ingin menghapus banner {selectedBanner[selectedId]?.title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Dengan menghapus banner "{selectedBanner[selectedId]?.title}" maka
-            data banner akan hilang secara permanen.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Tidak</Button>
-          <Button onClick={handleClose} autoFocus>
-            Hapus
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };
 
-export default BannerListTable;
+export default React.memo(BannerListTable);

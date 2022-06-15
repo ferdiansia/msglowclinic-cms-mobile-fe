@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { useAppDispatch } from 'src/redux/store';
 import { getUser } from 'src/redux/user/userSlice';
+import { _removeAuthenticate } from 'src/utils/storage.service';
 
 axios.interceptors.request.use((request) => {
   request.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
@@ -24,6 +25,11 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log(error?.response?.status === 401);
+    if (error?.response?.status === 401) {
+      _removeAuthenticate();
+      window.location.href = '/';
+    }
     return Promise.reject(error);
   }
 );
@@ -53,9 +59,8 @@ const MainContent = styled(Box)(
 );
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const getCurrentUser = async () => {
     await dispatch(getUser());
   };
@@ -67,7 +72,6 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
     }
 
     getCurrentUser();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
