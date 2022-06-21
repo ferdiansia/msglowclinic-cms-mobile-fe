@@ -18,7 +18,7 @@ export interface IBannerForm {
 
 export interface IBannerProps {
   onSubmit: (data: IBannerForm, addData: boolean) => void;
-  defaultValue: IBannerForm
+  defaultValue: IBannerForm;
 }
 
 const ErrorWrapper = styled(Box)(
@@ -42,13 +42,10 @@ function BannerForm(props: IBannerProps) {
     description: '',
     expired_at: new Date(),
     relations: null,
-    ...props?.defaultValue,
-    file: null,
-  }
+    ...props?.defaultValue
+  };
 
-  const HAS_EXPIRED_DATE = ["promo-banner"]
-
-  console.log('defaultValue', defaultValue)
+  const HAS_EXPIRED_DATE = ['promo-banner'];
 
   const {
     control,
@@ -101,21 +98,24 @@ function BannerForm(props: IBannerProps) {
           )}
         />
       </Box>
-      {(!defaultValue?.slug || HAS_EXPIRED_DATE.includes(defaultValue?.slug)) && <Box mt={3}>
-        <Controller
-          name="expired_at"
-          control={control}
-          defaultValue={new Date()}
-          render={({ field }) => (
-            <DesktopDatePicker
-              {...field}
-              label="Expired Date"
-              inputFormat="dd/MM/yyyy"
-              renderInput={(params) => <TextField {...params} />}
-            />
-          )}
-        />
-      </Box>}
+      {(!defaultValue?.slug ||
+        HAS_EXPIRED_DATE.includes(defaultValue?.slug)) && (
+        <Box mt={3}>
+          <Controller
+            name="expired_at"
+            control={control}
+            defaultValue={new Date()}
+            render={({ field }) => (
+              <DesktopDatePicker
+                {...field}
+                label="Expired Date"
+                inputFormat="dd/MM/yyyy"
+                renderInput={(params) => <TextField {...params} />}
+              />
+            )}
+          />
+        </Box>
+      )}
       <Box mt={3}>
         <Controller
           name="file"

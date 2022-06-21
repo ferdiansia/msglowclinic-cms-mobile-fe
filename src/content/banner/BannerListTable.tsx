@@ -29,7 +29,7 @@ interface BannerListTableProps {
 }
 
 const BannerListTable: FC<BannerListTableProps> = (props) => {
-  console.log("BannerListTable")
+  console.log('BannerListTable');
   const banners = useSelector(selectAllBanner);
   const theme = useTheme();
 
@@ -49,6 +49,7 @@ const BannerListTable: FC<BannerListTableProps> = (props) => {
             </TableHead>
             <TableBody>
               {banners.map((banner: IBanner) => {
+                console.log(banner);
                 return (
                   <TableRow hover key={banner.id}>
                     <TableCell width={110}>
