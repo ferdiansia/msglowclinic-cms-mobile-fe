@@ -4,7 +4,7 @@ import { memo, useCallback, useState } from 'react';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
   removeBanner,
-  selectEntitiesBanner,
+  selectEntitiesBanner
 } from 'src/redux/banner/bannerSlice';
 import { useAppDispatch } from 'src/redux/store';
 import { IBannerForm } from './BannerForm';
@@ -17,12 +17,11 @@ import { IBannerType } from 'src/models/banner.model';
 
 export interface IBannerProps {
   type: IBannerType;
-  handleOpenModal: (id?: IBannerForm) => void
-  loading: boolean
+  handleOpenModal: (id?: IBannerForm) => void;
+  loading: boolean;
 }
 
 function Banner(props: IBannerProps) {
-  console.log("Banner")
   const [openModalDelete, setOpenModelDelete] = useState<boolean>(false);
   const bannerEntities = useSelector(selectEntitiesBanner);
 

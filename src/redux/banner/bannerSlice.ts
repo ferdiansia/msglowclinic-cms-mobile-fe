@@ -148,7 +148,6 @@ export const bannerSlice = createSlice({
     });
     builder.addCase(updateBanner.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action.payload);
       if (action?.payload?.slug === 'promo-banner') {
         bannerAdapter.updateOne(state, {
           id: action.payload.id,

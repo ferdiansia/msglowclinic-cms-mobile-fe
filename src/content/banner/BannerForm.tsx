@@ -33,8 +33,6 @@ const bannerValidationSchema = object({
 }).required();
 
 function BannerForm(props: IBannerProps) {
-  console.log('BannerForm');
-
   const defaultValue = {
     id: null,
     title: '',

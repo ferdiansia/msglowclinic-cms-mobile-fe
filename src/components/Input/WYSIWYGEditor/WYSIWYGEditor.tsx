@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML
+} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 
@@ -9,7 +14,11 @@ import { Controller } from 'react-hook-form';
 import Text from 'src/components/Text';
 
 const WYSIWYGEditor = (props) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState(
+    EditorState.createWithContent(
+      ContentState.createFromBlockArray(convertFromHTML(props.defaultValue))
+    )
+  );
   const onEditorStateChange = (editorState, onChange) => {
     setEditorState(editorState);
     return onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())));

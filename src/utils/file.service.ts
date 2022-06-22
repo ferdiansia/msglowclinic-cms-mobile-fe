@@ -6,7 +6,6 @@ export const getBase64Image = (url, callback) => {
   xhr.onload = async () => {
     const reader = new FileReader();
     reader.onloadend = async () => {
-        console.log(reader)
       await callback(reader.result);
     };
     await reader.readAsDataURL(xhr.response);

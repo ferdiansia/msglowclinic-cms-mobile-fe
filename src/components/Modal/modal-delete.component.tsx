@@ -20,7 +20,6 @@ export interface IModalDeleteProps {
 }
 
 function ModalDelete(props: IModalDeleteProps) {
-  console.log("ModalDelete")
   return (
     <Dialog
       open={props.open}

@@ -14,7 +14,6 @@ export interface IBannerListProps {
 }
 
 function BannerList(props: IBannerListProps) {
-  console.log('BannerList')
   const dispatch = useAppDispatch();
 
   const getAllData = async () => {

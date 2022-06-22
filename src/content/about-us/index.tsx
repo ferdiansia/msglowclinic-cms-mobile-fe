@@ -1,41 +1,54 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { LoadingButton } from '@mui/lab';
-import { Button, Card, Container, TextField } from '@mui/material';
-import { Box } from '@mui/system';
+import { Card, Container } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import { Controller, useForm } from 'react-hook-form';
-import WYSIWYGEditor from 'src/components/Input/WYSIWYGEditor/WYSIWYGEditor';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { object, string } from 'yup';
+import { useAppDispatch, useAppSelector } from 'src/redux/store';
 import PageHeader from './PageHeader';
+import { useAlert } from 'react-alert';
+import { useCallback, useEffect } from 'react';
+import { getAboutUs, updateAboutUs } from 'src/redux/about-us/aboutUsSlice';
+import AboutUsForm from './about-us-form/about-us-form';
+import { unwrapResult } from '@reduxjs/toolkit';
 
-interface IAboutUsForm {
+export interface IAboutUsForm {
   id?: string;
   title: string;
-  aboutUs: string;
+  slug?: 'about-us';
+  render_type?: 'html' | 'text' | 'url' | 'markdown';
+  content: string;
 }
 
-const aboutUsValidationSchema = object({
-  title: string().required('Title wajib diisi'),
-  aboutUs: string().required('About Us wajib diisi')
-}).required();
-
 function AboutUs(props) {
-  const defaultValue: IAboutUsForm = {
-    id: null,
-    title: '',
-    aboutUs: '',
-    ...props?.defaultValue
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector((state) => state.aboutUs);
+  const alert = useAlert();
+
+  const getDataAboutUs = async () => {
+    await dispatch(
+      getAboutUs({
+        type: 'collection'
+      })
+    );
   };
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<IAboutUsForm>({
-    resolver: yupResolver(aboutUsValidationSchema),
-    defaultValues: defaultValue
-  });
+  useEffect(() => {
+    getDataAboutUs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSubmit = useCallback(async (formData: IAboutUsForm) => {
+    formData.render_type = 'html';
+
+    try {
+      const actionResult = await dispatch(updateAboutUs(formData));
+      const result = unwrapResult(actionResult);
+      if (result) {
+        alert.show('Data berhasil tersimpan');
+      }
+    } catch (err) {
+      alert.show(err);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <Helmet>
@@ -46,47 +59,7 @@ function AboutUs(props) {
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Card sx={{ py: 3, px: 2 }}>
-          <form
-            id="about-us-form"
-            onSubmit={handleSubmit((value) => console.log('check', value))}
-            autoComplete="off"
-          >
-            <Box mt={3}>
-              <Controller
-                name="title"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    placeholder="Title"
-                    label="Title"
-                    fullWidth
-                    error={!!errors?.title}
-                    helperText={errors.title?.message}
-                  />
-                )}
-              />
-            </Box>
-            <Box mt={3}>
-              <WYSIWYGEditor
-                label={'About Us'}
-                name="aboutUs"
-                control={control}
-              />
-            </Box>
-
-            <Box sx={{ pt: 3, textAlign: 'right' }}>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                sx={{ width: 100 }}
-              >
-                Simpan
-              </LoadingButton>
-            </Box>
-          </form>
+          {data && <AboutUsForm onSubmit={onSubmit} data={data} />}
         </Card>
       </Container>
     </>

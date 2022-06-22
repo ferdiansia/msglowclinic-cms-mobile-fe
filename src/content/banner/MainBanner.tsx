@@ -15,8 +15,6 @@ import { addBanner, updateBanner } from 'src/redux/banner/bannerSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 
 function MainBanner() {
-  console.log('MainBanner');
-
   const [openModalForm, setOpenModalForm] = useState<boolean>(false);
   const { loading } = useAppSelector((state) => state.banners);
 
