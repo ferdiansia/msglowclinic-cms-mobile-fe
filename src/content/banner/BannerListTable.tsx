@@ -29,7 +29,6 @@ interface BannerListTableProps {
 }
 
 const BannerListTable: FC<BannerListTableProps> = (props) => {
-  console.log("BannerListTable")
   const banners = useSelector(selectAllBanner);
   const theme = useTheme();
 

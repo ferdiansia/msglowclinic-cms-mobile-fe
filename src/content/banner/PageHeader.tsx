@@ -12,7 +12,6 @@ export interface IBannePageHeaderProps {
 }
 
 function PageHeader(props: IBannePageHeaderProps) {
-  console.log('PageHeader')
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>

@@ -33,7 +33,7 @@ export const getBannerByType = createAsyncThunk(
   async (params: IGetParamsBanner, thunkAPI) => {
     try {
       const response = await axios.get(`${API_URL}`, { params: { ...params } });
-      return {data:  response.data.data, type: params.slug};
+      return { data: response.data.data, type: params.slug };
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err?.response?.data?.message || 'Terjadi kesalahan tidak terduga'
@@ -41,7 +41,6 @@ export const getBannerByType = createAsyncThunk(
     }
   }
 );
-
 
 export const removeBanner = createAsyncThunk(
   `${BANNER}/remove`,
@@ -82,7 +81,7 @@ export const updateBanner = createAsyncThunk(
       const response = await axios.post(`${API_URL}/${payload.id}`, body, {
         params: {
           ...payload,
-          _method:'PUT'
+          _method: 'PUT'
         }
       });
       return response.data.data;
@@ -119,7 +118,7 @@ export const bannerSlice = createSlice({
     });
     builder.addCase(getBannerByType.fulfilled, (state, action) => {
       state.loading = false;
-      state.mainBannerData[`${action.payload.type}`] = action.payload.data
+      state.mainBannerData[`${action.payload.type}`] = action.payload.data;
     });
     builder.addCase(getBannerByType.rejected, (state, action) => {
       state.loading = false;
@@ -149,10 +148,13 @@ export const bannerSlice = createSlice({
     });
     builder.addCase(updateBanner.fulfilled, (state, action) => {
       state.loading = false;
-      if(action?.payload?.slug === 'promo-banner'){
-        bannerAdapter.updateOne(state, action.payload);
-      }else{
-        state.mainBannerData[`${action?.payload?.slug}`][0] = action.payload
+      if (action?.payload?.slug === 'promo-banner') {
+        bannerAdapter.updateOne(state, {
+          id: action.payload.id,
+          changes: action.payload
+        });
+      } else {
+        state.mainBannerData[`${action?.payload?.slug}`][0] = action.payload;
       }
     });
     builder.addCase(updateBanner.rejected, (state, action) => {

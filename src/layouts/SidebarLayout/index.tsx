@@ -25,7 +25,6 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error?.response?.status === 401);
     if (error?.response?.status === 401) {
       _removeAuthenticate();
       window.location.href = '/';

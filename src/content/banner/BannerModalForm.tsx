@@ -14,11 +14,10 @@ export interface IBannerModalFormProps {
   open: boolean;
   handleClose: () => void;
   onSubmit: (formData: IBannerForm) => void;
-  defaultValue: IBannerForm
-  loading: boolean
+  defaultValue: IBannerForm;
+  loading: boolean;
 }
 function BannerModalForm(props: IBannerModalFormProps) {
-  console.log('BannerModalForm')
   return (
     <Dialog
       disableEscapeKeyDown={true}
@@ -34,7 +33,10 @@ function BannerModalForm(props: IBannerModalFormProps) {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <BannerForm onSubmit={props.onSubmit} defaultValue={props.defaultValue}></BannerForm>
+        <BannerForm
+          onSubmit={props.onSubmit}
+          defaultValue={props.defaultValue}
+        ></BannerForm>
       </DialogContent>
 
       <DialogActions>
