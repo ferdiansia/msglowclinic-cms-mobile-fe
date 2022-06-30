@@ -19,6 +19,9 @@ const Login = Loader(lazy(() => import('src/content/login')));
 const Home = Loader(lazy(() => import('src/content/dashboards/Home')));
 const MainBanner = Loader(lazy(() => import('src/content/banner/MainBanner')));
 const AboutUs = Loader(lazy(() => import('src/content/about-us')));
+const ItemsGroup = Loader(
+  lazy(() => import('src/content/ecommerce/items-group'))
+);
 const Status404 = Loader(
   lazy(() => import('src/content/pages/Status/Status404'))
 );
@@ -58,6 +61,15 @@ const routes: PartialRouteObject[] = [
       {
         path: 'about-us',
         element: <AboutUs />
+      },
+      {
+        path: 'ecommerce',
+        children: [
+          {
+            path: 'items-group',
+            element: <ItemsGroup />
+          }
+        ]
       }
     ]
   }
