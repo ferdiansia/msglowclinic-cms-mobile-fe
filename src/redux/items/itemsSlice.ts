@@ -3,9 +3,10 @@ import axios from "axios"
 import { WAREHOUSE } from "src/const/api"
 import { IItemsModel } from "src/models/items.model"
 import { IGetParams } from "src/models/params.models"
+import { API_GATEWAY } from "src/utils/api"
 import { RootState } from "../store"
 
-const API_URL = `${process.env.REACT_APP_API_URL}/${WAREHOUSE}`
+const API_URL = `${API_GATEWAY}/${WAREHOUSE}`
 
 export const itemsAdapter = createEntityAdapter<IItemsModel>();
 

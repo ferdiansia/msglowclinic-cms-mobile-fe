@@ -3,8 +3,9 @@ import axios from 'axios';
 import { USER } from 'src/const/api';
 import { IBaseState } from 'src/models/base-state.model';
 import { IUser } from 'src/models/user.model';
+import { API_GATEWAY } from 'src/utils/api';
 
-const API_URL = `${process.env.REACT_APP_API_URL}/${USER}`;
+const API_URL = `${API_GATEWAY}/${USER}`;
 
 interface IUserState extends IBaseState {
   user: IUser;

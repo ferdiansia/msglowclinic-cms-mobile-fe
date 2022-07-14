@@ -18,7 +18,7 @@ function MainBanner() {
   const [openModalForm, setOpenModalForm] = useState<boolean>(false);
   const { loading } = useAppSelector((state) => state.banners);
 
-  const [data, setData] = useState<IBannerForm>(null);
+  const [data, setData] = useState<IBannerForm | { slug: IBannerType }>(null);
   const alert = useAlert();
   const dispatch = useAppDispatch();
 
@@ -31,14 +31,18 @@ function MainBanner() {
     }, 100);
   }, []);
 
-  const handleOpenModalForm = useCallback((data?: IBannerForm) => {
+  const handleOpenModalForm = useCallback((slug: { slug: IBannerType }) => {
+    if (slug) setData(slug);
+    setOpenModalForm(true);
+  }, []);
+
+  const handleOpenModalFormEdit = useCallback((data?: IBannerForm) => {
     if (data) setData(data);
     setOpenModalForm(true);
   }, []);
 
   const onSubmit = useCallback(
-    async (formData: IBannerForm, type: IBannerType = 'promo') => {
-      if (!formData?.slug) formData.slug = `${type}-banner`;
+    async (formData: IBannerForm) => {
       if (formData.expired_at)
         formData.expired_at = formatDate(formData.expired_at);
       formData.relations = 'file';
@@ -86,7 +90,7 @@ function MainBanner() {
           {BANNER_CARD.map((v, i) => (
             <Grid item xs={4} key={`${i}-${v}-banner`}>
               <MainBannerCard
-                handleEditData={handleOpenModalForm}
+                handleEditData={handleOpenModalFormEdit}
                 type={v}
               ></MainBannerCard>
             </Grid>
@@ -96,7 +100,15 @@ function MainBanner() {
       <Banner
         loading={loading}
         handleOpenModal={handleOpenModalForm}
+        handleOpenModalEdit={handleOpenModalFormEdit}
         type="promo"
+      />
+
+      <Banner
+        loading={loading}
+        handleOpenModal={handleOpenModalForm}
+        handleOpenModalEdit={handleOpenModalFormEdit}
+        type="about-us-gallery"
       />
 
       <BannerModalForm

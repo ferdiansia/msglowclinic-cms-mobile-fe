@@ -4,11 +4,12 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { toCapitalize } from 'src/utils/string-function';
 import React from 'react';
 import { IBannerType } from 'src/models/banner.model';
+import { IBannerForm } from './BannerForm';
 
 export interface IBannePageHeaderProps {
   title: IBannerType;
   hasCreate?: boolean;
-  handleOpenModalForm?: () => void;
+  handleOpenModalForm?: ({ slug: IBannerType }) => void;
 }
 
 function PageHeader(props: IBannePageHeaderProps) {
@@ -25,7 +26,9 @@ function PageHeader(props: IBannePageHeaderProps) {
             <Button
               sx={{ mt: { xs: 2, md: 0 } }}
               variant="contained"
-              onClick={() => props.handleOpenModalForm()}
+              onClick={() =>
+                props.handleOpenModalForm({ slug: `${props.title}-banner` })
+              }
               startIcon={<AddTwoToneIcon fontSize="small" />}
             >
               Create {toCapitalize(props.title)} Banner

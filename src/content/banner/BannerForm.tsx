@@ -3,7 +3,7 @@ import { DesktopDatePicker } from '@mui/lab';
 import { Box, styled, TextField } from '@mui/material';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { IBannerSlug } from 'src/models/banner.model';
+import { IBannerSlug, IBannerType } from 'src/models/banner.model';
 import { mixed, object, string } from 'yup';
 
 export interface IBannerForm {
@@ -18,7 +18,7 @@ export interface IBannerForm {
 
 export interface IBannerProps {
   onSubmit: (data: IBannerForm, addData: boolean) => void;
-  defaultValue: IBannerForm;
+  defaultValue: IBannerForm | { slug: IBannerType };
 }
 
 const ErrorWrapper = styled(Box)(
@@ -43,7 +43,7 @@ function BannerForm(props: IBannerProps) {
     ...props?.defaultValue
   };
 
-  const HAS_EXPIRED_DATE = ['promo-banner'];
+  const HAS_EXPIRED_DATE = ['promo-banner', 'about-us-gallery-banner'];
 
   const {
     control,
@@ -96,8 +96,7 @@ function BannerForm(props: IBannerProps) {
           )}
         />
       </Box>
-      {(!defaultValue?.slug ||
-        HAS_EXPIRED_DATE.includes(defaultValue?.slug)) && (
+      {HAS_EXPIRED_DATE.includes(defaultValue?.slug) && (
         <Box mt={3}>
           <Controller
             name="expired_at"

@@ -6,11 +6,12 @@ import {
 import axios from 'axios';
 import { BANNER } from 'src/const/api';
 import { IBannerForm } from 'src/content/banner/BannerForm';
-import { IBanner } from 'src/models/banner.model';
+import { IBanner, IBannerSlug, IBannerType } from 'src/models/banner.model';
 import { IGetParamsBanner } from 'src/models/params.models';
+import { API_GATEWAY } from 'src/utils/api';
 import { RootState } from '../store';
 
-const API_URL = `${process.env.REACT_APP_API_URL}/data/${BANNER}`;
+const API_URL = `${API_GATEWAY}/data/${BANNER}`;
 
 export const bannerAdapter = createEntityAdapter<IBanner>();
 
@@ -44,11 +45,11 @@ export const getBannerByType = createAsyncThunk(
 
 export const removeBanner = createAsyncThunk(
   `${BANNER}/remove`,
-  async (id: string, thunkAPI) => {
+  async (data: { type: IBannerSlug, id: string }, thunkAPI) => {
     try {
-      const response = await axios.delete(`${API_URL}/${id}`);
+      const response = await axios.delete(`${API_URL}/${data.id}`);
       if (response) {
-        return id;
+        return data;
       }
     } catch (err) {
       return thunkAPI.rejectWithValue(
@@ -128,7 +129,11 @@ export const bannerSlice = createSlice({
     });
     builder.addCase(removeBanner.fulfilled, (state, action) => {
       state.loading = false;
-      bannerAdapter.removeOne(state, action.payload);
+      const fIndex = state.mainBannerData[`${action?.payload?.type}`].findIndex(v => v.id === action.payload.id)
+      if (fIndex !== null || fIndex !== undefined)
+        state.mainBannerData[`${action?.payload?.type}`].splice(fIndex, 1)
+
+      // bannerAdapter.removeOne(state, action.payload);
     });
     builder.addCase(removeBanner.rejected, (state, action) => {
       state.loading = false;
@@ -138,7 +143,7 @@ export const bannerSlice = createSlice({
     });
     builder.addCase(addBanner.fulfilled, (state, action) => {
       state.loading = false;
-      bannerAdapter.addOne(state, action.payload);
+      state.mainBannerData[`${action?.payload?.slug}`].push(action.payload)
     });
     builder.addCase(addBanner.rejected, (state, action) => {
       state.loading = false;
@@ -148,13 +153,10 @@ export const bannerSlice = createSlice({
     });
     builder.addCase(updateBanner.fulfilled, (state, action) => {
       state.loading = false;
-      if (action?.payload?.slug === 'promo-banner') {
-        bannerAdapter.updateOne(state, {
-          id: action.payload.id,
-          changes: action.payload
-        });
-      } else {
-        state.mainBannerData[`${action?.payload?.slug}`][0] = action.payload;
+      const fIndex = state.mainBannerData[`${action?.payload?.slug}`].findIndex(v => v.id === action.payload.id)
+
+      if (fIndex !== null || fIndex !== undefined) {
+        state.mainBannerData[`${action?.payload?.slug}`][fIndex] = action.payload
       }
     });
     builder.addCase(updateBanner.rejected, (state, action) => {

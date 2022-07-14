@@ -8,13 +8,14 @@ import {
   Typography
 } from '@mui/material';
 import React from 'react';
+import { IBannerType } from 'src/models/banner.model';
 import BannerForm, { IBannerForm } from './BannerForm';
 
 export interface IBannerModalFormProps {
   open: boolean;
   handleClose: () => void;
   onSubmit: (formData: IBannerForm) => void;
-  defaultValue: IBannerForm;
+  defaultValue: IBannerForm | { slug: IBannerType };
   loading: boolean;
 }
 function BannerModalForm(props: IBannerModalFormProps) {
