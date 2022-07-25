@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Checkbox,
@@ -23,7 +24,7 @@ const MenuProps = {
   }
 };
 
-const ItemsGroupForm = (props) => {
+const ItemsCategoryForm = (props) => {
   const names = [
     'Oliver Hansen',
     'Van Henry',
@@ -110,4 +111,4 @@ const ItemsGroupForm = (props) => {
   );
 };
 
-export default memo(ItemsGroupForm);
+export default memo(ItemsCategoryForm);

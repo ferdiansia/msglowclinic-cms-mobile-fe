@@ -8,16 +8,16 @@ import {
   Typography
 } from '@mui/material';
 import React from 'react';
-import ItemsGroupForm from './itemsGroupForm';
+import ItemsGroupForm from './itemsCategoryForm';
 
-export interface IItemsGroupModalFormProps {
+export interface IItemsCategoryModalFormProps {
   open: boolean;
   handleClose: () => void;
   onSubmit: (formData: any) => void;
   defaultValue: any;
   loading: boolean;
 }
-function ItemsGroupModalForm(props: IItemsGroupModalFormProps) {
+function ItemsCategoryModalForm(props: IItemsCategoryModalFormProps) {
   return (
     <Dialog
       disableEscapeKeyDown={true}
@@ -64,4 +64,4 @@ function ItemsGroupModalForm(props: IItemsGroupModalFormProps) {
   );
 }
 
-export default React.memo(ItemsGroupModalForm);
+export default React.memo(ItemsCategoryModalForm);

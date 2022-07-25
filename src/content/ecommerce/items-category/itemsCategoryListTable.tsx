@@ -20,7 +20,7 @@ import { selectAllBanner } from 'src/redux/banner/bannerSlice';
 import { IBanner } from 'src/models/banner.model';
 import { format } from 'date-fns';
 
-const ItemsGroupListTable: FC<any> = (props) => {
+const ItemsCategoryListTable: FC<any> = (props) => {
   // const banners = useSelector(selectAllBanner);
   const theme = useTheme();
 
@@ -131,4 +131,4 @@ const ItemsGroupListTable: FC<any> = (props) => {
   );
 };
 
-export default React.memo(ItemsGroupListTable);
+export default React.memo(ItemsCategoryListTable);

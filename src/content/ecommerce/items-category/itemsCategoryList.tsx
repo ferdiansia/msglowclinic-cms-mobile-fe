@@ -1,7 +1,7 @@
 import { Card } from '@mui/material';
 import { memo, useEffect } from 'react';
 import { useAppDispatch } from 'src/redux/store';
-import BannerListTable from './itemsGroupListTable';
+import BannerListTable from './itemsCategoryListTable';
 
 // export interface IBannerListProps {
 //   hasDelete?: boolean;
@@ -10,7 +10,7 @@ import BannerListTable from './itemsGroupListTable';
 //   handleOpenModalEdit: (id: IBannerForm) => void;
 // }
 
-function ItemsGroupList(props) {
+function ItemsCategoryList(props) {
   const dispatch = useAppDispatch();
 
   // const getAllData = async () => {
@@ -35,4 +35,4 @@ function ItemsGroupList(props) {
   );
 }
 
-export default memo(ItemsGroupList);
+export default memo(ItemsCategoryList);

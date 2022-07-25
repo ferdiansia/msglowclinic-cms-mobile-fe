@@ -22,6 +22,9 @@ const AboutUs = Loader(lazy(() => import('src/content/about-us')));
 const ItemsGroup = Loader(
   lazy(() => import('src/content/ecommerce/items-group'))
 );
+const ItemsCategory = Loader(
+  lazy(() => import('src/content/ecommerce/items-category'))
+);
 const Status404 = Loader(
   lazy(() => import('src/content/pages/Status/Status404'))
 );
@@ -68,6 +71,10 @@ const routes: PartialRouteObject[] = [
           {
             path: 'items-group',
             element: <ItemsGroup />
+          },
+          {
+            path: 'items-category',
+            element: <ItemsCategory />
           }
         ]
       }

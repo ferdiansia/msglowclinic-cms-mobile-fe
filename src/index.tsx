@@ -14,8 +14,11 @@ import { store } from './redux/store';
 
 const options = {
   position: positions.TOP_CENTER,
-  timeout: 3000,
+  timeout: 5000,
   offset: '30px',
+  containerStyle: {
+    zIndex: 99999
+  },
   transition: transitions.SCALE
 };
 

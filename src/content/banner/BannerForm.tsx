@@ -11,7 +11,8 @@ export interface IBannerForm {
   title: string;
   slug?: IBannerSlug;
   description?: string;
-  expired_at?: string;
+  expired_at?: any;
+  url?: string;
   file?: any;
   relations?: string;
 }
@@ -36,8 +37,9 @@ function BannerForm(props: IBannerProps) {
   const defaultValue = {
     id: null,
     title: '',
-    slug: '',
+    slug: 'main-banner',
     description: '',
+    url: '',
     expired_at: new Date(),
     relations: null,
     ...props?.defaultValue
@@ -92,6 +94,24 @@ function BannerForm(props: IBannerProps) {
               rows={4}
               multiline
               fullWidth
+            />
+          )}
+        />
+      </Box>
+      <Box mt={3}>
+        <Controller
+          name="url"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="text"
+              placeholder="URL"
+              label="URL"
+              fullWidth
+              error={!!errors?.url}
+              helperText={errors.url?.message}
             />
           )}
         />
