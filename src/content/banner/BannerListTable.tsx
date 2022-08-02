@@ -17,19 +17,23 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 import { useSelector } from 'react-redux';
 import { selectAllBanner } from 'src/redux/banner/bannerSlice';
-import { IBanner } from 'src/models/banner.model';
+import { IBanner, IBannerType } from 'src/models/banner.model';
 import { format } from 'date-fns';
 import { IBannerForm } from './BannerForm';
+import { useAppSelector } from 'src/redux/store';
 
 interface BannerListTableProps {
   className?: string;
-  handleDelete: (id: string) => void;
+  handleDelete: (index: number) => void;
   hasDelete?: boolean;
   handleOpenEdit: (id: IBannerForm) => void;
+  type: IBannerType;
 }
 
 const BannerListTable: FC<BannerListTableProps> = (props) => {
-  const banners = useSelector(selectAllBanner);
+  // const banners = useSelector(selectAllBanner);
+  const { mainBannerData } = useAppSelector((state) => state.banners);
+
   const theme = useTheme();
 
   return (
@@ -47,91 +51,93 @@ const BannerListTable: FC<BannerListTableProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {banners.map((banner: IBanner) => {
-                return (
-                  <TableRow hover key={banner.id}>
-                    <TableCell width={110}>
-                      <img
-                        loading="lazy"
-                        width={100}
-                        alt="banner img"
-                        src={banner.file.url}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {banner.title}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {banner.description}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {banner.expired_at &&
-                          format(
-                            new Date(banner.expired_at).getTime(),
-                            'dd-MMMM-yyyy'
-                          )}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Tooltip title="Edit" arrow>
-                        <IconButton
-                          onClick={() => props.handleOpenEdit(banner)}
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.primary.lighter
-                            },
-                            color: theme.palette.primary.main
-                          }}
-                          color="inherit"
-                          size="small"
+              {mainBannerData?.[`${props.type}-banner`]?.map(
+                (banner: IBanner, index: number) => {
+                  return (
+                    <TableRow hover key={banner.id}>
+                      <TableCell width={110}>
+                        <img
+                          loading="lazy"
+                          width={100}
+                          alt="banner img"
+                          src={banner.file.url}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
                         >
-                          <EditTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      {props.hasDelete && (
-                        <Tooltip title="Delete" arrow>
+                          {banner.title}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {banner.description}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                        >
+                          {banner.expired_at &&
+                            format(
+                              new Date(banner.expired_at).getTime(),
+                              'dd-MMMM-yyyy'
+                            )}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Tooltip title="Edit" arrow>
                           <IconButton
-                            onClick={() => props.handleDelete(banner.id)}
+                            onClick={() => props.handleOpenEdit(banner)}
                             sx={{
                               '&:hover': {
-                                background: theme.colors.error.lighter
+                                background: theme.colors.primary.lighter
                               },
-                              color: theme.palette.error.main
+                              color: theme.palette.primary.main
                             }}
                             color="inherit"
                             size="small"
                           >
-                            <DeleteTwoToneIcon fontSize="small" />
+                            <EditTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                        {props.hasDelete && (
+                          <Tooltip title="Delete" arrow>
+                            <IconButton
+                              onClick={() => props.handleDelete(index)}
+                              sx={{
+                                '&:hover': {
+                                  background: theme.colors.error.lighter
+                                },
+                                color: theme.palette.error.main
+                              }}
+                              color="inherit"
+                              size="small"
+                            >
+                              <DeleteTwoToneIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
+              )}
             </TableBody>
           </Table>
         </TableContainer>

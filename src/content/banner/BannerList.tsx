@@ -1,7 +1,7 @@
 import { Card } from '@mui/material';
 import { memo, useEffect } from 'react';
 import { IBannerType } from 'src/models/banner.model';
-import { getAllBanner } from 'src/redux/banner/bannerSlice';
+import { getAllBanner, getBannerByType } from 'src/redux/banner/bannerSlice';
 import { useAppDispatch } from 'src/redux/store';
 import { IBannerForm } from './BannerForm';
 import BannerListTable from './BannerListTable';
@@ -9,7 +9,7 @@ import BannerListTable from './BannerListTable';
 export interface IBannerListProps {
   hasDelete?: boolean;
   title: IBannerType;
-  handleOpenModalDelete: (id: string) => void;
+  handleOpenModalDelete: (index: number) => void;
   handleOpenModalEdit: (id: IBannerForm) => void;
 }
 
@@ -18,7 +18,7 @@ function BannerList(props: IBannerListProps) {
 
   const getAllData = async () => {
     await dispatch(
-      getAllBanner({
+      getBannerByType({
         slug: `${props.title}-banner`,
         type: 'collection',
         relations: 'file'
@@ -37,6 +37,7 @@ function BannerList(props: IBannerListProps) {
         handleDelete={props.handleOpenModalDelete}
         handleOpenEdit={props.handleOpenModalEdit}
         hasDelete={!!props.hasDelete}
+        type={props.title}
       />
     </Card>
   );

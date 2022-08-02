@@ -4,13 +4,15 @@ import authReducer from './auth/authSlice';
 import userReducer from './user/userSlice';
 import bannerReducer from './banner/bannerSlice';
 import aboutUsReducer from './about-us/aboutUsSlice';
+import itemsReducer from './items/itemsSlice';
 
 export const store = configureStore({
   reducer: {
     auths: authReducer,
     users: userReducer,
     banners: bannerReducer,
-    aboutUs: aboutUsReducer
+    aboutUs: aboutUsReducer,
+    items: itemsReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 });

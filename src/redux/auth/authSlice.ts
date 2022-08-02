@@ -3,8 +3,9 @@ import axios from 'axios';
 import { AUTH } from 'src/const/api';
 import { IBaseState } from 'src/models/base-state.model';
 import { ILoginFormData } from 'src/models/login-form-data.model';
+import { API_GATEWAY } from 'src/utils/api';
 
-const API_URL = `${process.env.REACT_APP_API_URL}/${AUTH}`;
+const API_URL = `${API_GATEWAY}/${AUTH}`;
 
 interface IAuthState extends IBaseState {
   token: string;

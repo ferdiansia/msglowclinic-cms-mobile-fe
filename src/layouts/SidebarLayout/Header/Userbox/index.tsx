@@ -132,17 +132,17 @@ function HeaderUserbox() {
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
-        <Divider sx={{ mb: 0 }} />
-        <List sx={{ p: 1 }} component="nav">
-          <ListItem button to="/management/profile/details" component={NavLink}>
+        {/* <Divider sx={{ mb: 0 }} /> */}
+        {/* <List sx={{ p: 1 }} component="nav"> */}
+        {/* <ListItem button to="/management/profile/details" component={NavLink}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary="Change User Profile" />
           </ListItem>
           <ListItem button to="/dashboards/messenger" component={NavLink}>
             <VpnKeyTwoToneIcon fontSize="small" />
             <ListItemText primary="Change Password" />
-          </ListItem>
-        </List>
+          </ListItem> */}
+        {/* </List> */}
         <Divider />
         <Box sx={{ m: 1 }}>
           <LoadingButton

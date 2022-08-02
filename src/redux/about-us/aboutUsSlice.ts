@@ -4,8 +4,9 @@ import { PAGES } from "src/const/api"
 import { IAboutUsForm } from "src/content/about-us"
 import { IBaseState } from "src/models/base-state.model"
 import { IGetParams } from "src/models/params.models"
+import { API_GATEWAY } from "src/utils/api"
 
-const API_URL = `${process.env.REACT_APP_API_URL}/data/${PAGES}`
+const API_URL = `${API_GATEWAY}/data/${PAGES}`
 
 interface IAboutUsState extends IBaseState {
     data: {

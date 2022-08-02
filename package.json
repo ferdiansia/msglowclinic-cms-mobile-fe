@@ -8,9 +8,9 @@
     "url": "https://github.com/rikicmd"
   },
   "engines": {
-    "node": ">=14.17.3",
+    "node": ">=14.19.3",
     "npm": ">=6.14.13",
-    "yarn": "pleas-use-npm"
+    "yarn": ">=1.22.19"
   },
   "private": true,
   "dependencies": {
@@ -31,7 +31,7 @@
     "chart.js": "2.9.4",
     "clsx": "1.1.1",
     "date-fns": "2.25.0",
-    "dotenv": "16.0.1",
+    "dotenv": "^16.0.1",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "history": "5.0.1",

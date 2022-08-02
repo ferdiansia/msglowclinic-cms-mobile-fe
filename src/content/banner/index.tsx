@@ -6,30 +6,35 @@ import {
   removeBanner,
   selectEntitiesBanner
 } from 'src/redux/banner/bannerSlice';
-import { useAppDispatch } from 'src/redux/store';
+import { useAppDispatch, useAppSelector } from 'src/redux/store';
 import { IBannerForm } from './BannerForm';
 import BannerList from './BannerList';
 import PageHeader from './PageHeader';
 import { useAlert } from 'react-alert';
 import ModalDeleteComponent from 'src/components/Modal/modal-delete.component';
 import { useSelector } from 'react-redux';
-import { IBannerType } from 'src/models/banner.model';
+import { IBannerSlug, IBannerType } from 'src/models/banner.model';
 
 export interface IBannerProps {
   type: IBannerType;
-  handleOpenModal: (id?: IBannerForm) => void;
+  handleOpenModal: ({ slug: IBannerType }) => void;
+  handleOpenModalEdit: (id?: IBannerForm) => void;
   loading: boolean;
 }
 
 function Banner(props: IBannerProps) {
   const [openModalDelete, setOpenModelDelete] = useState<boolean>(false);
-  const bannerEntities = useSelector(selectEntitiesBanner);
+  // const bannerEntities = useSelector(selectEntitiesBanner);
+  const { mainBannerData } = useAppSelector((state) => state.banners);
 
-  const [selectedId, setSelectedId] = useState<string>(null);
+  const [selectedId, setSelectedId] = useState<number>(null);
   const dispatch = useAppDispatch();
   const alert = useAlert();
 
-  const filterTypeHasDeleteCreate = ['promo'];
+  const filterTypeHasDeleteCreate: IBannerType[] = [
+    'promo',
+    'about-us-gallery'
+  ];
 
   const handleCloseModalDelete = useCallback(() => {
     setOpenModelDelete(false);
@@ -38,16 +43,19 @@ function Banner(props: IBannerProps) {
     }, 100);
   }, []);
 
-  const handleOpenModalDelete = useCallback((id: string) => {
-    setSelectedId(id);
+  const handleOpenModalDelete = useCallback((index: number) => {
+    setSelectedId(index);
     setOpenModelDelete(true);
   }, []);
 
   const handleDeleteClick = async () => {
     try {
-      const actionResult = await dispatch(removeBanner(selectedId));
+      const slug: IBannerSlug = `${props.type}-banner`;
+      const id = mainBannerData[slug][selectedId]?.id;
+      const actionResult = await dispatch(removeBanner({ type: slug, id: id }));
       const result = unwrapResult(actionResult);
       if (result) {
+        alert.show('Data berhasil dihapus');
         handleCloseModalDelete();
       }
     } catch (err) {
@@ -77,7 +85,7 @@ function Banner(props: IBannerProps) {
               title={props.type}
               handleOpenModalDelete={handleOpenModalDelete}
               hasDelete={filterTypeHasDeleteCreate.includes(props.type)}
-              handleOpenModalEdit={props.handleOpenModal}
+              handleOpenModalEdit={props.handleOpenModalEdit}
             />
           </Grid>
         </Grid>
@@ -86,8 +94,12 @@ function Banner(props: IBannerProps) {
       <ModalDeleteComponent
         open={openModalDelete}
         handleClose={handleCloseModalDelete}
-        title={`Anda yakin ingin menghapus banner ${bannerEntities[selectedId]?.title}`}
-        content={`Dengan menghapus banner "${bannerEntities[selectedId]?.title}" maka
+        title={`Anda yakin ingin menghapus banner ${
+          mainBannerData?.[`${props.type}-banner`]?.[selectedId]?.title
+        }`}
+        content={`Dengan menghapus banner "${
+          mainBannerData?.[`${props.type}-banner`]?.[selectedId]?.title
+        }" maka
       data banner akan hilang secara permanen.`}
         onClick={() => {
           handleDeleteClick();

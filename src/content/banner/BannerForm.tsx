@@ -3,7 +3,7 @@ import { DesktopDatePicker } from '@mui/lab';
 import { Box, styled, TextField } from '@mui/material';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { IBannerSlug } from 'src/models/banner.model';
+import { IBannerSlug, IBannerType } from 'src/models/banner.model';
 import { mixed, object, string } from 'yup';
 
 export interface IBannerForm {
@@ -11,14 +11,15 @@ export interface IBannerForm {
   title: string;
   slug?: IBannerSlug;
   description?: string;
-  expired_at?: string;
+  expired_at?: any;
+  url?: string;
   file?: any;
   relations?: string;
 }
 
 export interface IBannerProps {
   onSubmit: (data: IBannerForm, addData: boolean) => void;
-  defaultValue: IBannerForm;
+  defaultValue: IBannerForm | { slug: IBannerType };
 }
 
 const ErrorWrapper = styled(Box)(
@@ -36,14 +37,15 @@ function BannerForm(props: IBannerProps) {
   const defaultValue = {
     id: null,
     title: '',
-    slug: '',
+    slug: 'main-banner',
     description: '',
+    url: '',
     expired_at: new Date(),
     relations: null,
     ...props?.defaultValue
   };
 
-  const HAS_EXPIRED_DATE = ['promo-banner'];
+  const HAS_EXPIRED_DATE = ['promo-banner', 'about-us-gallery-banner'];
 
   const {
     control,
@@ -96,8 +98,25 @@ function BannerForm(props: IBannerProps) {
           )}
         />
       </Box>
-      {(!defaultValue?.slug ||
-        HAS_EXPIRED_DATE.includes(defaultValue?.slug)) && (
+      <Box mt={3}>
+        <Controller
+          name="url"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="text"
+              placeholder="URL"
+              label="URL"
+              fullWidth
+              error={!!errors?.url}
+              helperText={errors.url?.message}
+            />
+          )}
+        />
+      </Box>
+      {HAS_EXPIRED_DATE.includes(defaultValue?.slug) && (
         <Box mt={3}>
           <Controller
             name="expired_at"

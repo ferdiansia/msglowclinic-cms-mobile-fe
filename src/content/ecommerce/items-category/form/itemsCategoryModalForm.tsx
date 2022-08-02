@@ -8,17 +8,16 @@ import {
   Typography
 } from '@mui/material';
 import React from 'react';
-import { IBannerType } from 'src/models/banner.model';
-import BannerForm, { IBannerForm } from './BannerForm';
+import ItemsGroupForm from './itemsCategoryForm';
 
-export interface IBannerModalFormProps {
+export interface IItemsCategoryModalFormProps {
   open: boolean;
   handleClose: () => void;
-  onSubmit: (formData: IBannerForm) => void;
-  defaultValue: IBannerForm | { slug: IBannerType };
+  onSubmit: (formData: any) => void;
+  defaultValue: any;
   loading: boolean;
 }
-function BannerModalForm(props: IBannerModalFormProps) {
+function ItemsCategoryModalForm(props: IItemsCategoryModalFormProps) {
   return (
     <Dialog
       disableEscapeKeyDown={true}
@@ -30,14 +29,14 @@ function BannerModalForm(props: IBannerModalFormProps) {
     >
       <DialogTitle>
         <Typography variant="h3" gutterBottom>
-          Form Banner
+          Form Items Group
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <BannerForm
+        <ItemsGroupForm
           onSubmit={props.onSubmit}
           defaultValue={props.defaultValue}
-        ></BannerForm>
+        ></ItemsGroupForm>
       </DialogContent>
 
       <DialogActions>
@@ -65,4 +64,4 @@ function BannerModalForm(props: IBannerModalFormProps) {
   );
 }
 
-export default React.memo(BannerModalForm);
+export default React.memo(ItemsCategoryModalForm);
