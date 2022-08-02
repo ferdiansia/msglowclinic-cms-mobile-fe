@@ -38,21 +38,21 @@ const menuItems: MenuItems[] = [
         icon: InfoTwoToneIcon,
         link: `${ABOUT_US_ROUTE}`
       },
-      {
-        name: 'Ecommerce',
-        icon: AddShoppingCartTwoToneIcon,
-        link: `${ECOMMERCE}`,
-        items: [
-          {
-            name: 'Items Group',
-            link: `${ECOMMERCE_ITEMS_GROUP}`,
-          },
-          {
-            name: 'Items Category',
-            link: `${ECOMMERCE_ITEMS_CATEGORY}`,
-          }
-        ]
-      }
+      // {
+      //   name: 'Ecommerce',
+      //   icon: AddShoppingCartTwoToneIcon,
+      //   link: `${ECOMMERCE}`,
+      //   items: [
+      //     {
+      //       name: 'Items Group',
+      //       link: `${ECOMMERCE_ITEMS_GROUP}`,
+      //     },
+      //     {
+      //       name: 'Items Category',
+      //       link: `${ECOMMERCE_ITEMS_CATEGORY}`,
+      //     }
+      //   ]
+      // }
     ]
   }
 ];

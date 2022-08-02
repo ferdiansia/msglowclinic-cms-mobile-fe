@@ -33,11 +33,11 @@ function ItemsCategory() {
         </Grid>
       </Container>
 
-      <ItemsCategoryModalForm
+      {/* <ItemsCategoryModalForm
         open={openModalAdd}
         handleClose={() => setOpenModalAdd(false)}
         onSubmit={() => {}}
-      />
+      /> */}
     </>
   );
 }
