@@ -14,11 +14,10 @@ import {
 } from '@mui/material';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { parseISO } from 'date-fns';
+import { format, utcToZonedTime } from 'date-fns-tz';
 
-import { useSelector } from 'react-redux';
-import { selectAllBanner } from 'src/redux/banner/bannerSlice';
 import { IBanner, IBannerType } from 'src/models/banner.model';
-import { format } from 'date-fns';
 import { IBannerForm } from './BannerForm';
 import { useAppSelector } from 'src/redux/store';
 
@@ -93,10 +92,14 @@ const BannerListTable: FC<BannerListTableProps> = (props) => {
                           gutterBottom
                           noWrap
                         >
-                          {banner.expired_at &&
+                          {banner?.expired_at &&
                             format(
-                              new Date(banner.expired_at).getTime(),
-                              'dd-MMMM-yyyy'
+                              utcToZonedTime(
+                                parseISO(banner.expired_at),
+                                'UTC'
+                              ),
+                              'dd-MM-yyyy HH:mm',
+                              { timeZone: 'UTC' }
                             )}
                         </Typography>
                       </TableCell>

@@ -13,14 +13,3 @@
     <li>NPM version: >=6.14.13</li>
     <li>Only using npm to run</li>
 </ol>
-
----
-
-<h2>
-    Technical Support
-</h2>
-<p>
-    You can open a support ticket by sending an email here: <a href="mailto:riki.cmd@gmail.com" title="Open Support Ticket">
-        riki.cmd@gmail.com
-    </a>
-</p>

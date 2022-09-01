@@ -1,36 +1,36 @@
 import { Card } from '@mui/material';
 import { memo, useEffect } from 'react';
+import { getItemCategory } from 'src/redux/item-category/itemCategorySlice';
 import { useAppDispatch } from 'src/redux/store';
-import BannerListTable from './itemsCategoryListTable';
+import ItemsCategoryListTable from './itemsCategoryListTable';
 
-// export interface IBannerListProps {
-//   hasDelete?: boolean;
-//   title: IBannerType;
-//   handleOpenModalDelete: (id: string) => void;
-//   handleOpenModalEdit: (id: IBannerForm) => void;
-// }
+interface ItemsCategoryLisPropst {
+  handleOpenModalEdit: (data) => void;
+  handleOpenModalDelete: (data) => void;
+}
 
-function ItemsCategoryList(props) {
+function ItemsCategoryList(props: ItemsCategoryLisPropst) {
   const dispatch = useAppDispatch();
 
-  // const getAllData = async () => {
-  //   await dispatch(
-  //     getAllBanner({
-  //       slug: `${props.title}-banner`,
-  //       type: 'collection',
-  //       relations: 'file'
-  //     })
-  //   );
-  // };
-
+  const getAllData = async () => {
+    await dispatch(
+      getItemCategory({
+        type: 'collection',
+        relations: 'cover'
+      })
+    );
+  };
   useEffect(() => {
-    // getAllData();
+    getAllData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.title]);
+  }, []);
 
   return (
     <Card>
-      <BannerListTable />
+      <ItemsCategoryListTable
+        edit={props.handleOpenModalEdit}
+        handleDelete={props.handleOpenModalDelete}
+      />
     </Card>
   );
 }

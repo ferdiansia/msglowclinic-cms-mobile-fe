@@ -1,63 +1,53 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { LoadingButton } from '@mui/lab';
-import {
-  Box,
-  Checkbox,
-  ListItemText,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  TextField
-} from '@mui/material';
-import { memo, useState } from 'react';
+import { Autocomplete, Box, styled, Switch, TextField } from '@mui/material';
+import { memo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { object, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from 'react-redux';
+import { selectAllItemCategory } from 'src/redux/item-category/itemCategorySlice';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
-};
+const ErrorWrapper = styled(Box)(
+  () => `
+    color: red
+  `
+);
 
-const ItemsCategoryForm = (props) => {
-  const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder'
-  ];
-  const [personName, setPersonName] = useState<string[]>([]);
+const ItemCategoryValidationSchema = object({
+  title: string().required('Title wajib diisi')
+}).required();
+
+export interface ItemsCategoryFormProps {
+  onSubmit: (data: any) => void;
+  defaultValue: any;
+}
+
+const ItemsCategoryForm = (props: ItemsCategoryFormProps) => {
+  const itemCategory = useSelector(selectAllItemCategory);
+  const defaultValue = {
+    id: null,
+    title: '',
+    description: '',
+    is_enabled: 0,
+    parent_id: '',
+    file: '',
+    item_ids: [],
+    ...props?.defaultValue
+  };
+
   const {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<any>();
+  } = useForm<any>({
+    resolver: yupResolver(ItemCategoryValidationSchema),
+    defaultValues: defaultValue
+  });
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value }
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
-  };
   return (
     <>
       <form
-        id="items-group-form"
-        onSubmit={handleSubmit((value) => props.onSubmit(value, true))}
+        id="item-category-form"
+        onSubmit={handleSubmit((value) => props.onSubmit(value))}
         autoComplete="off"
       >
         <Box mt={3}>
@@ -80,29 +70,81 @@ const ItemsCategoryForm = (props) => {
         </Box>
         <Box mt={3}>
           <Controller
-            name="title"
+            name="description"
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <Select
-                labelId="Items"
-                label="Items"
-                id="items"
-                multiple
-                value={personName}
-                onChange={handleChange}
-                input={<OutlinedInput label="Tag" />}
-                renderValue={(selected) => selected.join(', ')}
-                MenuProps={MenuProps}
+              <TextField
+                {...field}
+                type="text"
+                placeholder="Description"
+                label="Description"
                 fullWidth
-              >
-                {names.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    <Checkbox checked={personName.indexOf(name) > -1} />
-                    <ListItemText primary={name} />
-                  </MenuItem>
-                ))}
-              </Select>
+              />
+            )}
+          />
+        </Box>
+        <Box mt={3}>
+          <Controller
+            name="is_enabled"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Switch
+                {...field}
+                defaultChecked={!!field.value}
+                inputProps={{ 'aria-label': 'Enabled' }}
+                size="medium"
+              />
+            )}
+          />
+        </Box>
+        {!props?.defaultValue?.length && (
+          <Box mt={3}>
+            <Controller
+              name="parent_id"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Autocomplete
+                  disablePortal
+                  options={itemCategory.map((v) => {
+                    return {
+                      label: v.title,
+                      id: v.id
+                    };
+                  })}
+                  getOptionLabel={(option) => option.label}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
+                  onChange={(e, data) => field.onChange(data)}
+                  sx={{ width: 300, position: 'relative', zIndex: 50 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Parent" />
+                  )}
+                />
+              )}
+            />
+          </Box>
+        )}
+        <Box mt={3}>
+          <Controller
+            name="file"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    field.onChange(e.target.files[0]);
+                  }}
+                />
+                {errors?.file && (
+                  <ErrorWrapper>{errors?.file?.message}</ErrorWrapper>
+                )}
+              </>
             )}
           />
         </Box>

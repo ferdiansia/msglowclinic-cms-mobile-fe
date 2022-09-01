@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DesktopDatePicker } from '@mui/lab';
+import { parseISO } from 'date-fns';
+import { format, utcToZonedTime } from 'date-fns-tz';
 import { Box, styled, TextField } from '@mui/material';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -40,9 +41,15 @@ function BannerForm(props: IBannerProps) {
     slug: 'main-banner',
     description: '',
     url: '',
-    expired_at: new Date(),
     relations: null,
-    ...props?.defaultValue
+    ...props?.defaultValue,
+    expired_at: props?.defaultValue?.['expired_at']
+      ? format(
+          utcToZonedTime(parseISO(props?.defaultValue?.['expired_at']), 'UTC'),
+          "yyyy-MM-dd'T'HH:mm",
+          { timeZone: 'UTC' }
+        )
+      : format(new Date(), "yyyy-MM-dd'T'HH:mm")
   };
 
   const HAS_EXPIRED_DATE = ['promo-banner', 'about-us-gallery-banner'];
@@ -121,14 +128,23 @@ function BannerForm(props: IBannerProps) {
           <Controller
             name="expired_at"
             control={control}
-            defaultValue={new Date()}
+            defaultValue={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
             render={({ field }) => (
-              <DesktopDatePicker
+              <TextField
                 {...field}
                 label="Expired Date"
-                inputFormat="dd/MM/yyyy"
-                renderInput={(params) => <TextField {...params} />}
+                type="datetime-local"
+                sx={{ width: 250 }}
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
+
+              // <DateTimePicker
+              //   {...field}
+              //   label="Expired Date"
+              //   renderInput={(params) => <TextField {...params} />}
+              // />
             )}
           />
         </Box>

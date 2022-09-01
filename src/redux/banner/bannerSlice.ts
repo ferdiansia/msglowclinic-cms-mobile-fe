@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 import { BANNER } from 'src/const/api';
 import { IBannerForm } from 'src/content/banner/BannerForm';
-import { IBanner, IBannerSlug, IBannerType } from 'src/models/banner.model';
+import { IBanner, IBannerSlug } from 'src/models/banner.model';
 import { IGetParamsBanner } from 'src/models/params.models';
 import { API_GATEWAY } from 'src/utils/api';
 import { RootState } from '../store';

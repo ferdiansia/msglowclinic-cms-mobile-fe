@@ -1,7 +1,7 @@
 import { Card } from '@mui/material';
 import { memo, useEffect } from 'react';
 import { IBannerType } from 'src/models/banner.model';
-import { getAllBanner, getBannerByType } from 'src/redux/banner/bannerSlice';
+import { getBannerByType } from 'src/redux/banner/bannerSlice';
 import { useAppDispatch } from 'src/redux/store';
 import { IBannerForm } from './BannerForm';
 import BannerListTable from './BannerListTable';

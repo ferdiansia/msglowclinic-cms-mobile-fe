@@ -16,12 +16,19 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 import { useSelector } from 'react-redux';
-import { selectAllBanner } from 'src/redux/banner/bannerSlice';
-import { IBanner } from 'src/models/banner.model';
-import { format } from 'date-fns';
+import { selectAllItemCategory } from 'src/redux/item-category/itemCategorySlice';
+import { IItemCategory } from 'src/models/item-category.model';
 
-const ItemsCategoryListTable: FC<any> = (props) => {
-  // const banners = useSelector(selectAllBanner);
+interface ItemsCategoryListTableProps {
+  edit: (data) => {};
+  handleDelete?: (data) => {};
+}
+
+const ItemsCategoryListTable: FC<any> = ({
+  edit,
+  handleDelete
+}: ItemsCategoryListTableProps) => {
+  const itemCategory = useSelector(selectAllItemCategory);
   const theme = useTheme();
 
   return (
@@ -31,22 +38,21 @@ const ItemsCategoryListTable: FC<any> = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell width={110}>Title</TableCell>
-                <TableCell>Items Count</TableCell>
-                <TableCell>Expired Date</TableCell>
+                <TableCell>Cover</TableCell>
+                <TableCell>Category Name</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {banners.map((banner: IBanner) => {
+              {itemCategory.map((category: IItemCategory, index) => {
                 return (
-                  <TableRow hover key={banner.id}>
+                  <TableRow hover key={category.id}>
                     <TableCell width={110}>
                       <img
                         loading="lazy"
                         width={100}
-                        alt="banner img"
-                        src={banner.file.url}
+                        alt="category img"
+                        src={category?.cover?.url}
                       />
                     </TableCell>
                     <TableCell>
@@ -57,39 +63,13 @@ const ItemsCategoryListTable: FC<any> = (props) => {
                         gutterBottom
                         noWrap
                       >
-                        {banner.title}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {banner.description}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {banner.expired_at &&
-                          format(
-                            new Date(banner.expired_at).getTime(),
-                            'dd-MMMM-yyyy'
-                          )}
+                        {category.title}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
                       <Tooltip title="Edit" arrow>
                         <IconButton
-                          onClick={() => props.handleOpenEdit(banner)}
+                          onClick={() => edit(category)}
                           sx={{
                             '&:hover': {
                               background: theme.colors.primary.lighter
@@ -102,10 +82,10 @@ const ItemsCategoryListTable: FC<any> = (props) => {
                           <EditTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      {props.hasDelete && (
+                      {handleDelete && (
                         <Tooltip title="Delete" arrow>
                           <IconButton
-                            onClick={() => props.handleDelete(banner.id)}
+                            onClick={() => handleDelete(category.id)}
                             sx={{
                               '&:hover': {
                                 background: theme.colors.error.lighter
@@ -122,7 +102,7 @@ const ItemsCategoryListTable: FC<any> = (props) => {
                     </TableCell>
                   </TableRow>
                 );
-              })} */}
+              })}
             </TableBody>
           </Table>
         </TableContainer>

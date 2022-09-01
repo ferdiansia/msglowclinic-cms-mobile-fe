@@ -1,7 +1,6 @@
-const AUTH = 'auth';
-const USER = 'user';
-const BANNER = 'banners';
-const PAGES = 'pages'
-const WAREHOUSE = 'warehouse'
-
-export { AUTH, USER, BANNER, PAGES, WAREHOUSE };
+export const AUTH = 'auth';
+export const USER = 'user';
+export const BANNER = 'banners';
+export const PAGES = 'pages'
+export const WAREHOUSE = 'warehouse'
+export const ITEM_CATEGORY = 'item-categories'

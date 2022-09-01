@@ -5,6 +5,7 @@ import userReducer from './user/userSlice';
 import bannerReducer from './banner/bannerSlice';
 import aboutUsReducer from './about-us/aboutUsSlice';
 import itemsReducer from './items/itemsSlice';
+import itemCategoryReducer from './item-category/itemCategorySlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
     users: userReducer,
     banners: bannerReducer,
     aboutUs: aboutUsReducer,
-    items: itemsReducer
+    items: itemsReducer,
+    item_category: itemCategoryReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 });

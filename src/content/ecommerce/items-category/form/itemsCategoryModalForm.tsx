@@ -29,10 +29,10 @@ function ItemsCategoryModalForm(props: IItemsCategoryModalFormProps) {
     >
       <DialogTitle>
         <Typography variant="h3" gutterBottom>
-          Form Items Group
+          Items Category Cover
         </Typography>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent style={{ height: '80vh' }}>
         <ItemsGroupForm
           onSubmit={props.onSubmit}
           defaultValue={props.defaultValue}
@@ -53,7 +53,7 @@ function ItemsCategoryModalForm(props: IItemsCategoryModalFormProps) {
           type="submit"
           loading={!!props.loading}
           disabled={!!props.loading}
-          form="banner-form"
+          form="item-category-form"
           variant="contained"
           sx={{ width: 100 }}
         >

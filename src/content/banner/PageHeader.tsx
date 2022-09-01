@@ -4,7 +4,6 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { toCapitalize } from 'src/utils/string-function';
 import React from 'react';
 import { IBannerType } from 'src/models/banner.model';
-import { IBannerForm } from './BannerForm';
 
 export interface IBannePageHeaderProps {
   title: IBannerType;

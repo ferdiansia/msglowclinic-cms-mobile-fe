@@ -1,18 +1,18 @@
 import { Card, Container, Grid } from '@mui/material';
 import { memo } from 'react';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { useAppDispatch } from 'src/redux/store';
-import { useAlert } from 'react-alert';
+// import { useAppDispatch } from 'src/redux/store';
+// import { useAlert } from 'react-alert';
 import PageHeader from './PageHeader';
 import ItemsGroupForm from './itemsGroupForm';
 
 function ItemsGroup() {
-  const dispatch = useAppDispatch();
-  const alert = useAlert();
+  // const dispatch = useAppDispatch();
+  // const alert = useAlert();
 
-  const onSubmit = () => {
-    console.log('check');
-  };
+  // const onSubmit = () => {
+  //   console.log('check');
+  // };
 
   return (
     <>

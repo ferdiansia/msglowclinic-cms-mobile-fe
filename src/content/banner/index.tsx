@@ -3,8 +3,8 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { memo, useCallback, useState } from 'react';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
-  removeBanner,
-  selectEntitiesBanner
+  removeBanner
+  // selectEntitiesBanner
 } from 'src/redux/banner/bannerSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/store';
 import { IBannerForm } from './BannerForm';
@@ -12,7 +12,7 @@ import BannerList from './BannerList';
 import PageHeader from './PageHeader';
 import { useAlert } from 'react-alert';
 import ModalDeleteComponent from 'src/components/Modal/modal-delete.component';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { IBannerSlug, IBannerType } from 'src/models/banner.model';
 
 export interface IBannerProps {
