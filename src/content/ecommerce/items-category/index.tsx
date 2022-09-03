@@ -29,8 +29,6 @@ function ItemsCategory() {
     (state) => state.item_category
   );
 
-  console.log(itemCategoryData);
-
   const [selectedId, setSelectedId] = useState<string>(null);
 
   const handleOpenModal = useCallback((data?: any) => {
