@@ -33,7 +33,8 @@ function Banner(props: IBannerProps) {
 
   const filterTypeHasDeleteCreate: IBannerType[] = [
     'promo',
-    'about-us-gallery'
+    'about-us-gallery',
+    'commerce-promo'
   ];
 
   const handleCloseModalDelete = useCallback(() => {

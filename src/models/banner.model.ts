@@ -16,4 +16,4 @@ export interface IBanner {
 }
 
 export type IBannerSlug = `${IBannerType}-banner`;
-export type IBannerType = 'main' | 'promo' | 'about-us' | 'commerce' | 'about-us-gallery';
+export type IBannerType = 'main' | 'promo' | 'about-us' | 'commerce' | 'about-us-gallery' | 'commerce-promo';

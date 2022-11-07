@@ -111,6 +111,13 @@ function MainBanner() {
         type="about-us-gallery"
       />
 
+      <Banner
+        loading={loading}
+        handleOpenModal={handleOpenModalForm}
+        handleOpenModalEdit={handleOpenModalFormEdit}
+        type="commerce-promo"
+      />
+
       <BannerModalForm
         open={openModalForm}
         handleClose={handleCloseModalForm}
