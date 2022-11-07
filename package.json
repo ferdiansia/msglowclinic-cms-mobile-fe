@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "title": "Msclinic Mobile CMS",
   "description": "",
-  "author": {
-    "name": "Riki",
-    "url": "https://github.com/rikicmd"
-  },
   "engines": {
     "node": ">=14.19.3",
     "npm": ">=6.14.13",
